@@ -1,0 +1,7 @@
+# DCl ORCA Input
+! RHF 6-31G* Opt Freq
+%pal nprocs 4 end
+* xyz 0 1
+H(2) 0.0 0.0 0.0
+Cl 0.0 0.0 1.27
+*

@@ -1,0 +1,13 @@
+; HCl Topology File
+[ moleculetype ]
+; Name            nrexcl
+HCl               3
+
+[ atoms ]
+;   nr       type  resnr residue  atom   cgnr     charge       mass
+     1         opls_135      1    HCl     H      1      0.285      1.008
+     2         opls_267      1    HCl    Cl      1     -0.285     35.453
+
+[ bonds ]
+;  ai    aj funct            c0            c1            c2            c3
+    1     2     1
