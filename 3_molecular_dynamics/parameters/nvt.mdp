@@ -1,4 +1,4 @@
-; NVT Simulation Parameters
+; NVT Simulation Parameters (Optimized for NVIDIA RTX 5070 Ti)
 integrator  = md
 dt          = 0.002
 nsteps      = 50000
@@ -26,3 +26,12 @@ rvdw        = 1.0
 
 ; Periodic boundary conditions
 pbc         = xyz
+
+; GPU Optimization Settings
+cutoff-scheme           = Verlet
+verlet-buffer-tolerance = 0.005
+nstlist                 = 40      ; Increased neighbor searching interval for GPU efficiency
+ns_type                 = grid
+pme_order               = 4
+ewald_rtol              = 1e-5
+fourierspacing          = 0.12

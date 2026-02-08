@@ -1,7 +1,6 @@
-# DCl ORCA Input
-! RHF 6-31G* Opt Freq
-%pal nprocs 4 end
+! B3LYP def2-TZVP Opt Freq TightSCF
+%pal nprocs 12 end
 * xyz 0 1
-H(2) 0.0 0.0 0.0
-Cl 0.0 0.0 1.27
+H 0 0 0 M = 2.014102
+Cl 0 0 1.275 M = 34.968853
 *
