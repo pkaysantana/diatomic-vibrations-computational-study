@@ -1,4 +1,5 @@
-! B3LYP def2-TZVP Opt Freq TightSCF
+# NO ORCA Input - Radical Setup
+! UKS B3LYP def2-TZVP Opt Freq TightSCF
 %pal nprocs 12 end
 * xyz 0 2
 N 0 0 0
