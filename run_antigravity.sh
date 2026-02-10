@@ -59,12 +59,12 @@ fi
 
 
 # 0. Mock Data Check (for systems without ORCA/GROMACS)
+# 0. Mock Data Check (for systems without ORCA/GROMACS)
 if ! command -v orca &> /dev/null || ! command -v gmx &> /dev/null; then
     echo "Notice: High-performance binaries (ORCA/GROMACS) not found."
-    if [ ! -f "1_quantum_mechanics/outputs/HCl.out" ] || [ ! -f "3_molecular_dynamics/analysis/dist.xvg" ]; then
-        echo "Generating MOCK DATA for validation pipeline..."
-        "$PYTHON_BIN" generate_mock_data.py
-    fi
+    # ALWAYS regenerate mock data to ensure latest version/format
+    echo "Using MOCK DATA generator for validation pipeline..."
+    "$PYTHON_BIN" generate_mock_data.py
 fi
 
 
