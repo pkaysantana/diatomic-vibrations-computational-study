@@ -129,7 +129,7 @@ if command -v gmx &> /dev/null; then
     # 2b. Post-Processing (Generate dist.xvg)
     echo "  Generating bond distance data..."
     # Use '1 2' as input selection for bond distance (assuming index 1 and 2 are the atoms)
-    echo "1 2" | gmx distance -s analysis/nvt.tpr -f analysis/nvt.trr -oall analysis/dist.xvg
+    gmx distance -s analysis/nvt.tpr -f analysis/nvt.trr -oall analysis/dist.xvg -select 'com of group 1, com of group 2'
 elif [ -f "analysis/dist.xvg" ]; then
     echo "  Warning: 'gmx' command not found, but 'dist.xvg' exists."
     echo "  Using existing data for analysis."
