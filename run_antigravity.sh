@@ -58,14 +58,13 @@ if [ $? -ne 0 ]; then
 fi
 
 
-# 0. Mock Data Check (for systems without ORCA/GROMACS)
-# 0. Mock Data Check (for systems without ORCA/GROMACS)
-if ! command -v orca &> /dev/null || ! command -v gmx &> /dev/null; then
-    echo "Notice: High-performance binaries (ORCA/GROMACS) not found."
-    # ALWAYS regenerate mock data to ensure latest version/format
-    echo "Using MOCK DATA generator for validation pipeline..."
-    "$PYTHON_BIN" generate_mock_data.py
-fi
+
+# 0. Mock Data Check (DISABLED BY USER)
+# if ! command -v orca &> /dev/null || ! command -v gmx &> /dev/null; then
+#     echo "Notice: High-performance binaries (ORCA/GROMACS) not found."
+#     # USER REQUEST: Do not generate mock data.
+# fi
+
 
 
 # 0. Self-Test Phase
@@ -133,6 +132,12 @@ else
     echo "Skipping Morse fit (HCl_PES_Scan.out not found)."
 fi
 cd ..
+
+cd ..
+
+# 4. Final Validation
+echo "Phase 4: Quantitative Validation against NIST Data..."
+"$PYTHON_BIN" validation/benchmark_compare.py
 
 echo "----------------------------------------------------------------"
 echo "Antigravity Run Complete."
