@@ -32,12 +32,28 @@ if [ ! -d "$VENV_DIR" ]; then
     fi
 fi
 
-source "$VENV_DIR/bin/activate"
+
+# 2. Activate Virtual Environment (Cross-Platform)
+if [ -f "$VENV_DIR/Scripts/activate" ]; then
+    # Windows / Git Bash
+    source "$VENV_DIR/Scripts/activate"
+    PYTHON_BIN="$VENV_DIR/Scripts/python"
+    PIP_BIN="$VENV_DIR/Scripts/pip"
+elif [ -f "$VENV_DIR/bin/activate" ]; then
+    # Linux / WSL
+    source "$VENV_DIR/bin/activate"
+    PYTHON_BIN="$VENV_DIR/bin/python3"
+    PIP_BIN="$VENV_DIR/bin/pip"
+else
+    echo "Error: Virtual Environment created at $VENV_DIR but activate script not found."
+    echo "Check if creation failed or if path is correct."
+    exit 1
+fi
 
 echo "Installing dependencies..."
 "$PIP_BIN" install -r requirements.txt
 if [ $? -ne 0 ]; then
-    echo "Error installing dependencies. Please ensure python3-venv and python3-pip are installed (e.g., sudo apt install python3-venv python3-pip)."
+    echo "Error installing dependencies. Please ensure python3-venv and python3-pip are installed."
     exit 1
 fi
 
@@ -54,7 +70,7 @@ fi
 
 # 0. Self-Test Phase
 echo "Phase 0: Running Unit Tests..."
-python3 -m unittest discover tests
+"$PYTHON_BIN" -m unittest discover tests
 if [ $? -ne 0 ]; then
     echo "CRITICAL ERROR: Unit tests failed. Aborting production run."
     exit 1
@@ -101,7 +117,7 @@ fi
 # 2c. Run Python Analysis
 echo "  Running FFT Analysis..."
 cd analysis
-python3 fft_analysis.py
+"$PYTHON_BIN" fft_analysis.py
 cd ..
 
 cd ..
@@ -109,10 +125,10 @@ cd ..
 # 3. Final Python Modeling
 echo "Phase 2: Running Potential Energy Surface Analysis..."
 cd 2_analysis_modeling
-python3 reduced_mass.py
+"$PYTHON_BIN" reduced_mass.py
 # Only run morse fit if output exists
 if [ -f "../1_quantum_mechanics/outputs/HCl_PES_Scan.out" ]; then
-    python3 morse_fit.py ../1_quantum_mechanics/outputs/HCl_PES_Scan.out
+    "$PYTHON_BIN" morse_fit.py ../1_quantum_mechanics/outputs/HCl_PES_Scan.out
 else
     echo "Skipping Morse fit (HCl_PES_Scan.out not found)."
 fi
