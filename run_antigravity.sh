@@ -1,6 +1,21 @@
 #!/bin/bash
 # Antigravity Automation Master Script
 
+# Environment Setup
+echo "Phase -1: Setting up Python Environment in WSL..."
+if [ ! -d "venv" ]; then
+    echo "Creating virtual environment..."
+    python3 -m venv venv
+fi
+source venv/bin/activate
+
+echo "Installing dependencies..."
+pip install -r requirements.txt
+if [ $? -ne 0 ]; then
+    echo "Error installing dependencies. Please ensure python3-venv and python3-pip are installed (e.g., sudo apt install python3-venv python3-pip)."
+    exit 1
+fi
+
 # 0. Self-Test Phase
 echo "Phase 0: Running Unit Tests..."
 python3 -m unittest discover tests
