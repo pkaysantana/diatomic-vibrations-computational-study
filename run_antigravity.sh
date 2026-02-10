@@ -35,7 +35,7 @@ fi
 source "$VENV_DIR/bin/activate"
 
 echo "Installing dependencies..."
-pip install -r requirements.txt
+"$PIP_BIN" install -r requirements.txt
 if [ $? -ne 0 ]; then
     echo "Error installing dependencies. Please ensure python3-venv and python3-pip are installed (e.g., sudo apt install python3-venv python3-pip)."
     exit 1
@@ -47,7 +47,7 @@ if ! command -v orca &> /dev/null || ! command -v gmx &> /dev/null; then
     echo "Notice: High-performance binaries (ORCA/GROMACS) not found."
     if [ ! -f "1_quantum_mechanics/outputs/HCl.out" ] || [ ! -f "3_molecular_dynamics/analysis/dist.xvg" ]; then
         echo "Generating MOCK DATA for validation pipeline..."
-        "$VENV_DIR/bin/python3" generate_mock_data.py
+        "$PYTHON_BIN" generate_mock_data.py
     fi
 fi
 
