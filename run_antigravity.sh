@@ -59,11 +59,24 @@ fi
 
 
 
-# 0. Mock Data Check (DISABLED BY USER)fix th
-# if ! command -v orca &> /dev/null || ! command -v gmx &> /dev/null; then
-#     echo "Notice: High-performance binaries (ORCA/GROMACS) not found."
-#     # USER REQUEST: Do not generate mock data.
-# fi
+
+# Explicitly add ORCA to PATH for this script execution
+export PATH="$HOME/orca:$PATH"
+export LD_LIBRARY_PATH="$HOME/orca:$LD_LIBRARY_PATH"
+
+# Check if ORCA is actually found
+if ! command -v orca &> /dev/null; then
+    echo "WARNING: 'orca' command still not found in PATH."
+    echo "Attempting to source ~/.bashrc..."
+    source ~/.bashrc
+fi
+
+# Ensure MD inputs exist
+echo "Generating missing MD input files..."
+"$PYTHON_BIN" generate_md_inputs.py
+
+# 0. Mock Data Check (DISABLED BY USER)
+
 
 
 
