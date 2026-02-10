@@ -121,7 +121,7 @@ if command -v gmx &> /dev/null; then
     # 2a. Run Simulation
     echo "  Running GROMACS MD..."
     gmx grompp -f parameters/nvt.mdp -c topology/HCl.gro -p topology/HCl.top -o analysis/nvt.tpr
-    gmx mdrun -v -deffnm analysis/nvt -nb gpu -pme gpu -bonded gpu -update gpu
+    gmx mdrun -v -deffnm analysis/nvt
 
     # 2b. Post-Processing (Generate dist.xvg)
     echo "  Generating bond distance data..."
