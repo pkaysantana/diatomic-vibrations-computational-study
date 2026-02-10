@@ -47,9 +47,10 @@ if ! command -v orca &> /dev/null || ! command -v gmx &> /dev/null; then
     echo "Notice: High-performance binaries (ORCA/GROMACS) not found."
     if [ ! -f "1_quantum_mechanics/outputs/HCl.out" ] || [ ! -f "3_molecular_dynamics/analysis/dist.xvg" ]; then
         echo "Generating MOCK DATA for validation pipeline..."
-        python3 generate_mock_data.py
+        "$VENV_DIR/bin/python3" generate_mock_data.py
     fi
 fi
+
 
 # 0. Self-Test Phase
 echo "Phase 0: Running Unit Tests..."
