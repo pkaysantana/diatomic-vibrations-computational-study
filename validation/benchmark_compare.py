@@ -16,18 +16,64 @@ def load_simulation_results():
     For now, we will return None or mock values to demonstrate the validation logic.
     """
     # Placeholder: We check if outputs exist
+import re
+
+    # Real parsing logic
     results = {}
     base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    orca_out = os.path.join(base_path, '1_quantum_mechanics', 'outputs', 'HCl.out')
-    
-    if os.path.exists(orca_out):
-        # TODO: Parse actual values from ORCA output
-        # For demonstration, let's assume we parsed:
-        results['HCl'] = {'re': 1.28, 'freq': 2990.0} # Common B3LYP values
-    else:
-        print("Warning: Simulation output files not found. Using Mock Data for validation test.")
-        results['HCl'] = {'re': 1.28, 'freq': 2991.0}
-    
+    output_dir = os.path.join(base_path, '1_quantum_mechanics', 'outputs')
+
+    if not os.path.exists(output_dir):
+        print(f"Warning: Output directory {output_dir} not found.")
+        return results
+
+    for filename in os.listdir(output_dir):
+        if filename.endswith(".out"):
+            mol_name = filename.replace(".out", "")
+            filepath = os.path.join(output_dir, filename)
+            
+            data = {}
+            with open(filepath, 'r') as f:
+                content = f.read()
+                
+                # Parse Vibrational Frequencies
+                # Look for "VIBRATIONAL FREQUENCIES" block
+                if "VIBRATIONAL FREQUENCIES" in content:
+                    # Regex to find the first frequency (fundamental for diatomic)
+                    # ORCA format:
+                    #    0:         0.00 cm-1
+                    #    ...
+                    #    6:      2990.12 cm-1 
+                    # We look for the first non-zero vibrational mode (usually index 6 for diatomic 3N-5=1 mode? No 3*2-5=1 mode. So mode 0-4 are translation/rotation (0.00), mode 5 is vib)
+                    # Actually for linear it's 3N-5. 6-5=1.
+                    # The frequency block usually lists them.
+                    # Let's look for the highest frequency or just generic "cm-1" pattern.
+                    freq_matches = re.findall(r"\s+(\d+):\s+(\d+\.\d+)\s+cm\*\*-1", content)
+                    if freq_matches:
+                        # For diatomics, there is only 1 real vibration.
+                        # Usually the last one or the only non-zero one.
+                        # Let's take the largest one to be safe.
+                        freqs = [float(x[1]) for x in freq_matches if float(x[1]) > 10.0]
+                        if freqs:
+                            data['freq'] = max(freqs)
+
+                # Parse Bond Length
+                # Look for "INTERATOMIC DISTANCES"
+                if "INTERATOMIC DISTANCES" in content:
+                    # R(H  ,Cl )   1.2754  Angstrom
+                    # Regex: R(Atom1,Atom2)   Value   Angstrom
+                    dist_match = re.search(r"R\((\w+)\s*,\s*(\w+)\)\s+(\d+\.\d+)\s+Ang", content)
+                    if dist_match:
+                        data['re'] = float(dist_match.group(3))
+            
+            if data:
+                results[mol_name] = data
+                
+    # Fallback/Debug if empty (user might not have run it yet)
+    if not results:
+         print("No valid ORCA output files found. Using Mock Data for demonstration.")
+         results['HCl'] = {'re': 1.28, 'freq': 2991.0}
+
     return results
 
 def validate(results):
