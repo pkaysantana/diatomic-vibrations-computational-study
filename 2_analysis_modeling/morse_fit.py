@@ -141,13 +141,16 @@ def fit_morse(r_data, E_data, label):
     plt.figure(figsize=(8, 6))
     plt.scatter(r_data, E_data, color='red', label='ORCA Data')
     plt.plot(r_fit, E_fit, 'b--', label=f'Morse Fit (re={re_dist:.3f} A)')
-    plt.xlabel('Bond Length ($\AA$)')
+    plt.xlabel(r'Bond Length ($\AA$)')
     plt.ylabel('Energy (Hartree)')
     plt.title(f'Morse Potential Fit: {label}')
     plt.legend()
     plt.grid(True)
     
-    plot_filename = f"plots/morse_fit_{label.replace('.out','').replace('/','_')}.png"
+    import os
+    output_dir = os.path.join(os.path.dirname(__file__), 'plots')
+    os.makedirs(output_dir, exist_ok=True)
+    plot_filename = os.path.join(output_dir, f"morse_fit_{label.replace('.out','').replace('/','_')}.png")
     plt.savefig(plot_filename)
     print(f"Plot saved to {plot_filename}")
 
