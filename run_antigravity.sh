@@ -1,6 +1,15 @@
 #!/bin/bash
 # Antigravity Automation Master Script
 
+# 0. Self-Test Phase
+echo "Phase 0: Running Unit Tests..."
+python3 -m unittest discover tests
+if [ $? -ne 0 ]; then
+    echo "CRITICAL ERROR: Unit tests failed. Aborting production run."
+    exit 1
+fi
+echo "Unit tests passed. Proceeding..."
+
 # 1. Run Quantum Jobs
 echo "Phase 1: Starting ORCA runs on AMD Ryzen (12 cores)..."
 cd 1_quantum_mechanics/inputs
