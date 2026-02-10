@@ -3,11 +3,6 @@
 
 # Environment Setup
 echo "Phase -1: Setting up Python Environment in WSL..."
-# Environment Setup
-echo "Phase -1: Setting up Python Environment in WSL..."
-
-# Environment Setup
-echo "Phase -1: Setting up Python Environment in WSL..."
 
 # Use a location in the Linux home directory to avoid /mnt/c verify permission issues
 VENV_DIR="$HOME/.antigravity_venv"
