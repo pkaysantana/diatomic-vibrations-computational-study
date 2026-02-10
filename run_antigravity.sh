@@ -76,6 +76,8 @@ if ! command -v orca &> /dev/null; then
         ORCA_DIR=$(dirname "$DYNAMIC_ORCA")
         export PATH="$ORCA_DIR:$PATH"
         export LD_LIBRARY_PATH="$ORCA_DIR:$LD_LIBRARY_PATH"
+        # Also set ORCA_PATH for good measure
+        export ORCA_PATH="$ORCA_DIR" 
         echo "Found ORCA at: $ORCA_DIR"
     fi
 fi
@@ -127,7 +129,7 @@ if command -v gmx &> /dev/null; then
     # 2b. Post-Processing (Generate dist.xvg)
     echo "  Generating bond distance data..."
     # Use '1 2' as input selection for bond distance (assuming index 1 and 2 are the atoms)
-    echo "1 2" | gmx distance -s analysis/nvt.tpr -f analysis/nvt.trr -o analysis/dist.xvg
+    echo "1 2" | gmx distance -s analysis/nvt.tpr -f analysis/nvt.trr -oall analysis/dist.xvg
 elif [ -f "analysis/dist.xvg" ]; then
     echo "  Warning: 'gmx' command not found, but 'dist.xvg' exists."
     echo "  Using existing data for analysis."
