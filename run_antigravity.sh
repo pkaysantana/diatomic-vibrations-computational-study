@@ -103,9 +103,10 @@ echo "Phase 1: Starting ORCA runs on AMD Ryzen (12 cores)..."
 cd 1_quantum_mechanics/inputs
 for mol in HCl DCl CO NO; do
     echo "Running ORCA for $mol..."
-    # Check if orca is in path, otherwise warn
-    if command -v orca &> /dev/null; then
-        orca $mol.inp > ../outputs/$mol.out
+    # Check if orca is available and get full path
+    ORCA_FULL_PATH=$(command -v orca)
+    if [ -n "$ORCA_FULL_PATH" ]; then
+        "$ORCA_FULL_PATH" $mol.inp > ../outputs/$mol.out
     else
         echo "Warning: 'orca' command not found. Skipping $mol calculation."
     fi
