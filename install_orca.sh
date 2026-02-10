@@ -1,56 +1,61 @@
 #!/bin/bash
 # install_orca.sh
-# Automates moving ORCA from Windows Downloads to WSL Home and updating PATH
-# Created by Antigravity
+# Automates ORCA and GROMACS installation
 
-echo "Starting ORCA Installation Script..."
+echo "--------------------------------------------------------"
+echo "Starting Installation Script (v2 - Robust)"
+echo "--------------------------------------------------------"
 
-# Detect Environment (WSL vs Git Bash)
+# 1. Environment Check
 if [[ "$(uname -r)" != *microsoft* && "$(uname)" != "Linux" ]]; then
-    echo "Detected Windows environment (Git Bash/PowerShell)."
-    echo "This script must run inside WSL. Attempting to relaunch..."
+    echo "This script must run inside WSL. Launching WSL..."
     wsl bash install_orca.sh
-    if [ $? -eq 0 ]; then exit 0; else echo "Error: Failed to launch script inside WSL."; exit 1; fi
+    exit $?
 fi
 
-# Define Paths
+# 2. Install GROMACS (requires sudo, might ask for password)
+echo "Checking for GROMACS..."
+if ! command -v gmx &> /dev/null; then
+    echo "GROMACS not found. Installing..."
+    echo "Please enter your password if prompted."
+    sudo apt-get update
+    sudo apt-get install -y gromacs
+else
+    echo "GROMACS is already installed."
+fi
+
+# 3. Install ORCA
 DOWNLOADS_DIR="/mnt/c/Users/Don/Downloads"
-ORCA_FOLDER_NAME="orca_6_1_0_linux_x86-64_shared_openmpi418_avx2"
-SOURCE_PATH="$DOWNLOADS_DIR/$ORCA_FOLDER_NAME"
 TARGET_DIR="$HOME/orca_6_1_0"
 SYMLINK_DIR="$HOME/orca"
 
-echo "Looking for ORCA in: $DOWNLOADS_DIR"
+echo "Looking for ORCA in Downloads..."
 
-if [ ! -d "$SOURCE_PATH" ]; then
-    echo "Error: Could not find extracted ORCA folder at:"
-    echo "  $SOURCE_PATH"
-    echo ""
-    echo "Checking for alternative versions..."
-    ls -d "$DOWNLOADS_DIR"/orca_* 2>/dev/null
+# Find ANY folder starting with orca_6 in Downloads
+FOUND_ORCA=$(find "$DOWNLOADS_DIR" -maxdepth 1 -type d -name "orca_6*" | head -n 1)
+
+if [ -z "$FOUND_ORCA" ]; then
+    echo "Error: Could not find any extracted ORCA folder in Downloads."
+    echo "Please ensure you downloaded AND extracted ORCA to your Downloads folder."
     exit 1
 fi
 
-echo "Found ORCA folder. Installing to: $TARGET_DIR"
+echo "Found ORCA source: $FOUND_ORCA"
 
-# Move/Copy
 if [ -d "$TARGET_DIR" ]; then
     echo "Target directory $TARGET_DIR already exists."
-    echo "Skipping copy (assuming it's installed)."
 else
-    mv "$SOURCE_PATH" "$TARGET_DIR"
-    echo "Moved folder successfully."
+    echo "Moving ORCA to $TARGET_DIR..."
+    mv "$FOUND_ORCA" "$TARGET_DIR"
 fi
 
-# Create Symlink
-ln -sZnf "$TARGET_DIR" "$SYMLINK_DIR"
-echo "Created symlink at $SYMLINK_DIR"
+# Force Symlink creation
+ln -sfn "$TARGET_DIR" "$SYMLINK_DIR"
+echo "Updated symlink at $SYMLINK_DIR"
 
-# Update PATH
+# 4. Configure PATH
 echo "Configuring PATH in ~/.bashrc..."
-if grep -q "export PATH=\"\$HOME/orca:\$PATH\"" ~/.bashrc; then
-    echo "PATH already configured in .bashrc."
-else
+if ! grep -q "export PATH=\"\$HOME/orca:\$PATH\"" ~/.bashrc; then
     echo "" >> ~/.bashrc
     echo "# ORCA via Antigravity Setup" >> ~/.bashrc
     echo "export PATH=\"\$HOME/orca:\$PATH\"" >> ~/.bashrc
@@ -60,6 +65,6 @@ fi
 
 echo "--------------------------------------------------------"
 echo "Installation Complete!"
-echo "IMPORTANT: Run the following command to apply changes:"
+echo "IMPORTANT: RUN THIS COMMAND NOW:"
 echo "source ~/.bashrc"
 echo "--------------------------------------------------------"
