@@ -133,11 +133,10 @@ else
 fi
 cd ..
 
-cd ..
-
 # 4. Final Validation
 echo "Phase 4: Quantitative Validation against NIST Data..."
 "$PYTHON_BIN" validation/benchmark_compare.py
+
 
 echo "----------------------------------------------------------------"
 echo "Antigravity Run Complete."
