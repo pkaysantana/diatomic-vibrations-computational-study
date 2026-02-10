@@ -50,7 +50,7 @@ for mol, data in molecules_data.items():
     # Residue 1, Name MOL, Atom 1, Number 1, Position...
     content_gro += f"{1:5d}{mol:<5s}{data['at1']:>5s}{1:5d}{0.000:8.3f}{0.000:8.3f}{0.000:8.3f}\n"
     content_gro += f"{1:5d}{mol:<5s}{data['at2']:>5s}{2:5d}{dist_nm:8.3f}{0.000:8.3f}{0.000:8.3f}\n"
-    content_gro += f"{2.0:10.5f}{2.0:10.5f}{2.0:10.5f}\n" 
+    content_gro += f"{4.0:10.5f}{4.0:10.5f}{4.0:10.5f}\n" 
     
     with open(gro_file, "w") as f:
         f.write(content_gro)
