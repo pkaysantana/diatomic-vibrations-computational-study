@@ -6,26 +6,30 @@ echo "Phase -1: Setting up Python Environment in WSL..."
 # Environment Setup
 echo "Phase -1: Setting up Python Environment in WSL..."
 
-# Check if venv is valid
-if [ -d "venv" ] && [ ! -f "venv/bin/activate" ]; then
-    echo "Detected broken venv. Removing..."
-    rm -rf venv
+# Environment Setup
+echo "Phase -1: Setting up Python Environment in WSL..."
+
+# Use a location in the Linux home directory to avoid /mnt/c verify permission issues
+VENV_DIR="$HOME/.antigravity_venv"
+
+if [ -d "$VENV_DIR" ] && [ ! -f "$VENV_DIR/bin/activate" ]; then
+    echo "Detected broken venv at $VENV_DIR. Removing..."
+    rm -rf "$VENV_DIR"
 fi
 
-if [ ! -d "venv" ]; then
-    echo "Creating virtual environment..."
-    python3 -m venv venv
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Creating virtual environment at $VENV_DIR..."
+    python3 -m venv "$VENV_DIR"
     if [ $? -ne 0 ]; then
-        echo "Warning: Standard venv creation failed (likely ensurepip issue). Trying fallback..."
-        rm -rf venv
-        python3 -m venv venv --without-pip
+        echo "Warning: Standard venv creation failed. Trying fallback without pip..."
+        rm -rf "$VENV_DIR"
+        python3 -m venv "$VENV_DIR" --without-pip
         if [ $? -ne 0 ]; then
-            echo "Error: Failed to create venv even without pip. Ensure python3-venv is installed."
+            echo "Error: Failed to create venv even without pip. Please install python3-venv."
             exit 1
         fi
         
-        # Manually install pip in the pip-less venv
-        source venv/bin/activate
+        source "$VENV_DIR/bin/activate"
         echo "Bootstrapping pip..."
         curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
         python3 get-pip.py
@@ -33,7 +37,7 @@ if [ ! -d "venv" ]; then
     fi
 fi
 
-source venv/bin/activate
+source "$VENV_DIR/bin/activate"
 
 echo "Installing dependencies..."
 pip install -r requirements.txt
