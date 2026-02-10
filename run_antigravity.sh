@@ -3,10 +3,24 @@
 
 # Environment Setup
 echo "Phase -1: Setting up Python Environment in WSL..."
+# Environment Setup
+echo "Phase -1: Setting up Python Environment in WSL..."
+
+# Check if venv is valid
+if [ -d "venv" ] && [ ! -f "venv/bin/activate" ]; then
+    echo "Detected broken venv. Removing..."
+    rm -rf venv
+fi
+
 if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
     python3 -m venv venv
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to create venv. Ensure python3-venv is installed."
+        exit 1
+    fi
 fi
+
 source venv/bin/activate
 
 echo "Installing dependencies..."
