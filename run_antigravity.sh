@@ -16,8 +16,20 @@ if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
     python3 -m venv venv
     if [ $? -ne 0 ]; then
-        echo "Error: Failed to create venv. Ensure python3-venv is installed."
-        exit 1
+        echo "Warning: Standard venv creation failed (likely ensurepip issue). Trying fallback..."
+        rm -rf venv
+        python3 -m venv venv --without-pip
+        if [ $? -ne 0 ]; then
+            echo "Error: Failed to create venv even without pip. Ensure python3-venv is installed."
+            exit 1
+        fi
+        
+        # Manually install pip in the pip-less venv
+        source venv/bin/activate
+        echo "Bootstrapping pip..."
+        curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+        python3 get-pip.py
+        rm get-pip.py
     fi
 fi
 
