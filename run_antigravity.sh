@@ -68,15 +68,24 @@ cd ../..
 echo "Phase 3: Unleashing 5070 Ti for GROMACS..."
 cd 3_molecular_dynamics
 
-# 2a. Run Simulation
-echo "  Running GROMACS MD..."
-gmx grompp -f parameters/nvt.mdp -c topology/HCl.gro -p topology/HCl.top -o analysis/nvt.tpr
-gmx mdrun -v -deffnm analysis/nvt -nb gpu -pme gpu -bonded gpu -update gpu
+# Check if GROMACS is installed
+if command -v gmx &> /dev/null; then
+    # 2a. Run Simulation
+    echo "  Running GROMACS MD..."
+    gmx grompp -f parameters/nvt.mdp -c topology/HCl.gro -p topology/HCl.top -o analysis/nvt.tpr
+    gmx mdrun -v -deffnm analysis/nvt -nb gpu -pme gpu -bonded gpu -update gpu
 
-# 2b. Post-Processing (Generate dist.xvg)
-echo "  Generating bond distance data..."
-# Use '1 2' as input selection for bond distance (assuming index 1 and 2 are the atoms)
-echo "1 2" | gmx distance -s analysis/nvt.tpr -f analysis/nvt.trr -o analysis/dist.xvg
+    # 2b. Post-Processing (Generate dist.xvg)
+    echo "  Generating bond distance data..."
+    # Use '1 2' as input selection for bond distance (assuming index 1 and 2 are the atoms)
+    echo "1 2" | gmx distance -s analysis/nvt.tpr -f analysis/nvt.trr -o analysis/dist.xvg
+elif [ -f "analysis/dist.xvg" ]; then
+    echo "  Warning: 'gmx' command not found, but 'dist.xvg' exists."
+    echo "  Using existing data for analysis."
+else
+    echo "  Error: 'gmx' command not found and no existing 'dist.xvg' found."
+    echo "  Cannot proceed with FFT analysis."
+fi
 
 # 2c. Run Python Analysis
 echo "  Running FFT Analysis..."
