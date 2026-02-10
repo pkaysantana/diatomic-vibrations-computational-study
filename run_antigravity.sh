@@ -61,14 +61,23 @@ fi
 
 
 # Explicitly add ORCA to PATH for this script execution
-export PATH="$HOME/orca:$PATH"
-export LD_LIBRARY_PATH="$HOME/orca:$LD_LIBRARY_PATH"
+# Found structure: ~/orca -> orca_6_1_0... folder
+# So binary is at ~/orca/orca_6_1_0_linux_x86-64_shared_openmpi418_avx2/orca
+ORCA_HOME="$HOME/orca/orca_6_1_0_linux_x86-64_shared_openmpi418_avx2"
+export PATH="$ORCA_HOME:$PATH"
+export LD_LIBRARY_PATH="$ORCA_HOME:$LD_LIBRARY_PATH"
 
 # Check if ORCA is actually found
 if ! command -v orca &> /dev/null; then
     echo "WARNING: 'orca' command still not found in PATH."
-    echo "Attempting to source ~/.bashrc..."
-    source ~/.bashrc
+    echo "Attempting to locate it dynamically..."
+    DYNAMIC_ORCA=$(find "$HOME/orca" -name "orca" -type f -executable | head -n 1)
+    if [ -n "$DYNAMIC_ORCA" ]; then
+        ORCA_DIR=$(dirname "$DYNAMIC_ORCA")
+        export PATH="$ORCA_DIR:$PATH"
+        export LD_LIBRARY_PATH="$ORCA_DIR:$LD_LIBRARY_PATH"
+        echo "Found ORCA at: $ORCA_DIR"
+    fi
 fi
 
 # Ensure MD inputs exist
