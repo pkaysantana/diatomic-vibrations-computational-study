@@ -59,7 +59,7 @@ fi
 
 
 
-# 0. Mock Data Check (DISABLED BY USER)
+# 0. Mock Data Check (DISABLED BY USER)fix th
 # if ! command -v orca &> /dev/null || ! command -v gmx &> /dev/null; then
 #     echo "Notice: High-performance binaries (ORCA/GROMACS) not found."
 #     # USER REQUEST: Do not generate mock data.
