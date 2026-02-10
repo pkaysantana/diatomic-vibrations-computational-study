@@ -52,8 +52,7 @@ def load_simulation_results():
                 
     # Fallback/Debug if empty
     if not results:
-         print("No valid ORCA output files found. Using Mock Data for demonstration.")
-         results['HCl'] = {'re': 1.28, 'freq': 2991.0}
+         print("No valid ORCA output files found. Please run ./run_antigravity.sh with ORCA installed.")
 
     return results
 
