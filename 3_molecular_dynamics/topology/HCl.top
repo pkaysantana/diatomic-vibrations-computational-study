@@ -1,13 +1,31 @@
-; HCl Topology File
+; HCl Topology for Antigravity
+
+[ defaults ]
+; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ
+1               2               yes             0.5     0.5
+
+[ atomtypes ]
+; name  at.num  mass     charge ptype  sigma      epsilon (Lennard-Jones - generic)
+A1       1      1.008   0.000  A      0.33       0.00  ; Dummy LJ
+A2       17     35.450   0.000  A      0.33       0.00  ; Dummy LJ
+
 [ moleculetype ]
 ; Name            nrexcl
-HCl               3
+HCl             3
 
 [ atoms ]
 ;   nr       type  resnr residue  atom   cgnr     charge       mass
-     1         opls_135      1    HCl     H      1      0.285      1.008
-     2         opls_267      1    HCl    Cl      1     -0.285     35.453
+     1         A1      1    HCl     H      1      0.000      1.008
+     2         A2      1    HCl     Cl      1      0.000      35.450
 
 [ bonds ]
-;  ai    aj funct            c0            c1            c2            c3
-    1     2     1
+;  ai    aj funct            c0            c1 (k)
+    1     2     1      0.1275   310000.0
+
+[ system ]
+; Name
+HCl Simulation
+
+[ molecules ]
+; Compound        #mols
+HCl             1

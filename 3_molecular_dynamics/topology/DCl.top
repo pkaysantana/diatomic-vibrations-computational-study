@@ -1,0 +1,31 @@
+; DCl Topology for Antigravity
+
+[ defaults ]
+; nbfunc        comb-rule       gen-pairs       fudgeLJ fudgeQQ
+1               2               yes             0.5     0.5
+
+[ atomtypes ]
+; name  at.num  mass     charge ptype  sigma      epsilon (Lennard-Jones - generic)
+A1       1      2.014   0.000  A      0.33       0.00  ; Dummy LJ
+A2       17     35.450   0.000  A      0.33       0.00  ; Dummy LJ
+
+[ moleculetype ]
+; Name            nrexcl
+DCl             3
+
+[ atoms ]
+;   nr       type  resnr residue  atom   cgnr     charge       mass
+     1         A1      1    DCl     D      1      0.000      2.014
+     2         A2      1    DCl     Cl      1      0.000      35.450
+
+[ bonds ]
+;  ai    aj funct            c0            c1 (k)
+    1     2     1      0.1275   310000.0
+
+[ system ]
+; Name
+DCl Simulation
+
+[ molecules ]
+; Compound        #mols
+DCl             1

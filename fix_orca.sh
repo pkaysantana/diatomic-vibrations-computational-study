@@ -7,3 +7,14 @@ for f in *_mpi; do
         echo "Linked $f -> $basename"
     fi
 done
+
+# Second pass: link non-mpi to _mpi if missing
+for f in *; do
+    if [[ "$f" != *"_mpi"* ]] && [[ -f "$f" ]] && [[ -x "$f" ]]; then
+        mpiname="${f}_mpi"
+        if [ ! -e "$mpiname" ]; then
+            ln -s "$f" "$mpiname"
+            echo "Linked $f -> $mpiname"
+        fi
+    fi
+done

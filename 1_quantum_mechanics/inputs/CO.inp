@@ -1,5 +1,7 @@
 # CO ORCA Input - Optimized for Legion 7
+%maxcore 4000
 ! B3LYP def2-TZVP Opt Freq TightSCF
+%maxcore 4000
 %pal nprocs 12 end
 * xyz 0 1
 C 0.0 0.0 0.0

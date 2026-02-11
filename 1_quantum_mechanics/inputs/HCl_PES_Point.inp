@@ -1,0 +1,7 @@
+! DLPNO-CCSD(T) cc-pVQZ cc-pVQZ/C TightSCF
+%pal nprocs 8 end
+%maxcore 5000
+* xyz 0 1
+H 0 0 0
+Cl 0 0 4.0000
+*

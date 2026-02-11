@@ -1,0 +1,14 @@
+HCl_PES_Scan.gbw 
+0 
+1 
+0 
+$constraints
+ 0
+ 0
+ 1 6
+      1      1      0     -1     -1      2   1.51178091
+
+
+$autoAddFragBonds
+ 10
+   5.00000000

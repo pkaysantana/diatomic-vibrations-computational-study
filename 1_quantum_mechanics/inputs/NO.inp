@@ -1,5 +1,7 @@
 # NO ORCA Input - Radical Setup
+%maxcore 4000
 ! UKS B3LYP def2-TZVP Opt Freq TightSCF
+%maxcore 4000
 %pal nprocs 12 end
 * xyz 0 2
 N 0 0 0

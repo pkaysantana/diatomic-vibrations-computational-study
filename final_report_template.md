@@ -1,7 +1,7 @@
 # Computational Study of Diatomic Vibrations: HCl, DCl, CO, NO
 
-**Author:** [Your Name]
-**Date:** [Date]
+**Author:** [Don Aborah]
+**Date:** [10/02/2026]
 
 ## Abstract
 
@@ -22,8 +22,8 @@ Vibrational spectroscopy provides deep insights into the nature of chemical bond
 Electronic structure calculations were performed using **ORCA v5.x**.
 
 - **Level of Theory**: B3LYP hybrid functional.
-- **Basis Set**: def2-TZVP (Triple-Zeta Valence Polarized).
-- **Hardware Acceleration**: Parallelized across 12 CPU cores (AMD Ryzen).
+- **Basis Set**: def2-TZVP (Triple-Zeta Valence Polarised).
+- **Hardware Acceleration**: Parallelised across 12 CPU cores (AMD Ryzen).
 - **Radical Treatment**: Unrestricted Kohn-Sham (UKS) formalism for NO.
 
 ### 2.2 Potential Energy Surface Fitting
@@ -54,7 +54,7 @@ MD simulations were conducted using **GROMACS 2023+**.
 
 ### 3.2 Quantum Mechanical Results
 
-*Insert ORCA optimization results here (Bond lengths, Harmonic Frequencies).*
+*Insert ORCA optimisation results here (Bond lengths, Harmonic Frequencies).*
 
 - **HCl**: ...
 - **DCl**: ...
@@ -78,4 +78,4 @@ The peak position corresponds to the fundamental vibrational frequency ($\nu$).
 
 ## 4. Conclusion
 
-[Summarize whether the MD results align with QM predictions and literature values.]
+[Summarise whether the MD results align with QM predictions and literature values.]

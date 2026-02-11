@@ -25,6 +25,12 @@ def calculate_spectrum(time_ps, bond_length_nm):
     fluctuation_windowed = fluctuation * window
     
     # 3. FFT
+    time_ps = np.array(time_ps)
+    bond_length_nm = np.array(bond_length_nm) # Corrected from dist_nm
+    if len(time_ps) < 2:
+        print("Not enough data for FFT.")
+        return np.array([]), np.array([]) # Ensure return type matches function signature
+    
     dt = time_ps[1] - time_ps[0]
     n_samples = len(time_ps)
     

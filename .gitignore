@@ -1,29 +1,12 @@
-# --- Computational Chemistry Defaults ---
-# ORCA temporary/output files (Keep the .inp and .out, ignore the rest)
-*.tmp
-*.gbw
-*.prop
-*.hess
-*.pc
-*.opt
-*.bas
-*.dens
-*.vbi
+# GROMACS Backups
+#*#
+.#*
 
-# GROMACS temporary/binary files
-*.trr
-*.xtc
-*.edr
-*.tpr
-*.cpt
-# Note: Keep .gro and .top as they are small topology/coord files
-
-# --- Python/System Defaults ---
+# Python
 __pycache__/
-*.py[cod]
-*$py.class
+*.pyc
+
+# Virtual Environments
+.antigravity_venv/
+lab_env/
 venv/
-.venv/
-.env
-.DS_Store
-Thumbs.db
